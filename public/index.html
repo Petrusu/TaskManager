@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Task Manager</h1>
+    <div id="task-list" class="task-list"></div>
+    <button id="add-task-btn">Добавить задачу</button>
+</div>
+
+<div id="edit-task-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <input type="hidden" id="edit-task-id">
+        <input type="text" id="edit-task-title" placeholder="Наименование">
+        <textarea id="edit-task-value" placeholder="Текст"></textarea>
+        <input type="date" id="edit-task-date">
+        <select id="edit-task-stage">
+            <option value="Ready">Ready</option>
+            <option value="Progress">Progress</option>
+            <option value="Review">Review</option>
+            <option value="Done">Done</option>
+        </select>
+        <input type="range" id="edit-task-progress" min="0" max="100">
+        <button id="save-task-btn">Сохранить</button>
+        <button id="cancel-task-btn">Отмена</button>
+    </div>
+</div>
+
+<div id="delete-task-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Вы уверены, что хотите удалить задание? Данное действие будет необратимо.</p>
+        <button id="confirm-delete-task-btn">Удалить</button>
+        <button id="cancel-delete-task-btn">Отмена</button>
+    </div>
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
