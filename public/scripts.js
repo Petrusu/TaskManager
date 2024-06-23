@@ -2,13 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiUrl = 'http://localhost:3000/api/v1/tasks';
     const taskList = document.getElementById('task-list');
 
+    async function fetchStages() {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/stages');
+            const data = await response.json();
+            return data.stages;
+        } catch (error) {
+            console.error('Error fetching stages:', error);
+            return [];
+        }
+    }
+
     async function fetchTasks() {
         try {
             const response = await fetch(apiUrl);
             const tasks = await response.json();
             console.log('Fetched tasks:', tasks); // Для отладки
             taskList.innerHTML = '';
-            tasks.forEach(task => {
+            tasks.tasks.forEach(task => {
                 addTaskToDOM(task);
             });
         } catch (error) {
@@ -22,12 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
         taskElement.setAttribute('draggable', 'true');
         taskElement.setAttribute('data-task-id', task._id);
 
+        const creationDate = new Date(task.creationDate).toLocaleDateString();
+        const expiredDate = new Date(task.expiredDate).toLocaleDateString();
+
         taskElement.innerHTML = `
             <span class="task-title">${task.title}</span>
             <span class="edit-btn">...</span>
             <div class="popup-menu">
                 <button class="edit-task">Редактировать</button>
                 <button class="delete-task">Удалить</button>
+            </div>
+            <div class="task-text">${task.value}</div>
+            <div class="task-meta">
+                <span><i class="far fa-flag"></i> ${creationDate} - ${expiredDate}</span>
             </div>
         `;
 
@@ -50,20 +68,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         taskElement.querySelector('.edit-task').addEventListener('click', function() {
             const taskId = taskElement.getAttribute('data-task-id');
-            fetch(`${apiUrl}/${taskId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('edit-task-id').value = data._id;
-                    document.getElementById('edit-task-title').value = data.title;
-                    document.getElementById('edit-task-value').value = data.value;
-                    document.getElementById('edit-task-date').value = new Date(data.expiredDate).toISOString().substr(0, 10);
-                    document.getElementById('edit-task-stage').value = data.stage;
-                    document.getElementById('edit-task-progress').value = data.completeProgress;
+            if (taskId) {
+                fetch(`${apiUrl}/${taskId}`)
+                    .then(response => response.json())
+                    .then(task => {
+                        document.getElementById('edit-task-id').value = task._id;
+                        document.getElementById('edit-task-title').value = task.title;
+                        document.getElementById('edit-task-value').value = task.value;
+                        document.getElementById('edit-task-date').value = task.expiredDate ? new Date(task.expiredDate).toISOString().substr(0, 10) : '';
+                        document.getElementById('edit-task-stage').value = task.stage;
+                        document.getElementById('edit-task-progress').value = task.completeProgress;
 
-                    showModal('edit-task-modal');
-                })
-                .catch(error => console.error('Error fetching task:', error));
+                        showModal('edit-task-modal');
+                    })
+                    .catch(error => console.error('Error fetching task:', error));
+            } else {
+                console.error('taskId is null or undefined');
+            }
         });
+
+        function isValidDate(dateString) {
+            return dateString && !isNaN(Date.parse(dateString));
+        }
 
         taskElement.querySelector('.delete-task').addEventListener('click', function() {
             const taskId = taskElement.getAttribute('data-task-id');
@@ -113,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleDragEnd(e) {
         this.style.opacity = '1';
         this.style.border = '3px dashed transparent';
-        items.forEach(function (item) {
+        items.forEach(function(item) {
             item.classList.remove('task-hover');
         });
     }
@@ -192,3 +218,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchTasks();
 });
+

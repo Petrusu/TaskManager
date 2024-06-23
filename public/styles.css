@@ -1,38 +1,39 @@
 :root {
-    --bg:#ebf0f7;
-    --header:#fbf4f6;
-    --text:#2e2e2f;
-    --white:#ffffff;
-    --light-grey:#c4cad3;
-    --tag-1:#ceecfd;
-    --tag-1-text:#2e87ba;
-    --tag-2:#d6ede2;
-    --tag-2-text:#13854e;
-    --tag-3:#ceecfd;
-    --tag-3-text:#2d86ba;
-    --tag-4:#f2dcf5;
-    --tag-4-text:#a734ba;
-    --purple:#7784ee;
+    --bg: #ebf0f7;
+    --header: #fbf4f6;
+    --text: #2e2e2f;
+    --white: #ffffff;
+    --light-grey: #c4cad3;
+    --tag-1: #ceecfd;
+    --tag-1-text: #2e87ba;
+    --tag-2: #d6ede2;
+    --tag-2-text: #13854e;
+    --tag-3: #ceecfd;
+    --tag-3-text: #2d86ba;
+    --tag-4: #f2dcf5;
+    --tag-4-text: #a734ba;
+    --purple: #7784ee;
 }
+
 * {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
 body {
-    color:var(--text);
+    color: var(--text);
 }
 
 .app {
-    background-color:var(--bg);
-    width:100%;
-    min-height:100vh;
+    background-color: var(--bg);
+    width: 100%;
+    min-height: 100vh;
 }
 
 h1 {
-    font-size:30px;
+    font-size: 30px;
 }
 
 .container {
@@ -42,17 +43,19 @@ h1 {
 .task-list {
     display: flex;
     flex-direction: column;
+    margin-right: 10px;
 }
 
 .task {
+    position: relative;
+    margin: 10px 0;
     cursor: move;
     background-color: var(--white);
-    padding: 1rem;
     border-radius: 8px;
     width: 100%;
-    box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
-    margin-bottom: 1rem;
     border: 3px dashed transparent;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .task:hover {
@@ -61,19 +64,32 @@ h1 {
 }
 
 .task-title {
-    font-size: 20px;
+    font-size: 1.2em;
+    margin: 5px 0;
+}
+
+.task-text {
+    font-size: 1em;
+    margin: 5px 0;
 }
 
 .edit-btn {
     cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
     color: var(--light-grey);
 }
 
 .popup-menu {
     display: none;
     position: absolute;
+    top: 40px;
+    right: 10px;
     background: var(--white);
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     padding: 0.5rem;
     z-index: 10;
@@ -127,4 +143,8 @@ h1 {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.task.show-menu .popup-menu {
+    display: block;
 }
